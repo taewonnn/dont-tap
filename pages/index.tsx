@@ -57,68 +57,80 @@ const COLORS = {
 };
 
 const MISSION_POOL: MissionDef[] = [
+  // phase 1: 모든 버튼이 같은 스타일, 텍스트로만 구분
   {
     description: '"누르세요" 버튼을 누르세요',
     phase: 1,
     buttons: [
       { label: '누르세요', bgColor: COLORS.btnPrimary, textColor: '#fff', isCorrect: true, size: 'medium' },
-      { label: '누르지 마세요', bgColor: COLORS.btnSecondary, textColor: COLORS.textBody, isCorrect: false, size: 'medium' },
-      { label: '누르면 손해', bgColor: COLORS.btnSecondary, textColor: COLORS.textBody, isCorrect: false, size: 'medium' },
+      { label: '누르지 마세요', bgColor: COLORS.btnPrimary, textColor: '#fff', isCorrect: false, size: 'medium' },
+      { label: '누르면 손해', bgColor: COLORS.btnPrimary, textColor: '#fff', isCorrect: false, size: 'medium' },
     ],
   },
   {
     description: '"정답" 버튼을 누르세요',
     phase: 1,
     buttons: [
-      { label: '정답', bgColor: COLORS.btnPrimary, textColor: '#fff', isCorrect: true, size: 'medium' },
+      { label: '정답', bgColor: COLORS.btnSecondary, textColor: COLORS.textBody, isCorrect: true, size: 'medium' },
       { label: '오답', bgColor: COLORS.btnSecondary, textColor: COLORS.textBody, isCorrect: false, size: 'medium' },
-      { label: '진짜 같죠?', bgColor: COLORS.btnSecondary, textColor: COLORS.textBody, isCorrect: false, size: 'medium' },
+      { label: '정답같은 오답', bgColor: COLORS.btnSecondary, textColor: COLORS.textBody, isCorrect: false, size: 'medium' },
     ],
   },
   {
-    description: '"지금!" 버튼을 누르세요',
+    description: '"클릭" 버튼을 누르세요',
     phase: 1,
     buttons: [
-      { label: '지금!', bgColor: COLORS.btnPrimary, textColor: '#fff', isCorrect: true, size: 'medium' },
-      { label: '나중에', bgColor: COLORS.btnSecondary, textColor: COLORS.textBody, isCorrect: false, size: 'medium' },
-      { label: '여기 말고', bgColor: COLORS.btnSecondary, textColor: COLORS.textBody, isCorrect: false, size: 'medium' },
+      { label: '클릭', bgColor: COLORS.btnPrimary, textColor: '#fff', isCorrect: true, size: 'medium' },
+      { label: '클릭하기', bgColor: COLORS.btnPrimary, textColor: '#fff', isCorrect: false, size: 'medium' },
+      { label: '클릭!', bgColor: COLORS.btnPrimary, textColor: '#fff', isCorrect: false, size: 'medium' },
+      { label: '클릭하세요', bgColor: COLORS.btnPrimary, textColor: '#fff', isCorrect: false, size: 'medium' },
     ],
   },
   {
-    description: '파란색 버튼을 누르세요',
+    description: '"확인" 버튼을 누르세요',
+    phase: 1,
+    buttons: [
+      { label: '확인', bgColor: COLORS.btnSecondary, textColor: COLORS.textBody, isCorrect: true, size: 'medium' },
+      { label: '확인하기', bgColor: COLORS.btnSecondary, textColor: COLORS.textBody, isCorrect: false, size: 'medium' },
+      { label: '확인했어요', bgColor: COLORS.btnSecondary, textColor: COLORS.textBody, isCorrect: false, size: 'medium' },
+    ],
+  },
+  // phase 2: 같은 텍스트 + 색/크기로 구분, 함정이 더 그럴듯해 보임
+  {
+    description: '파란색 배경 버튼을 누르세요',
     phase: 2,
     buttons: [
-      { label: '파란 버튼', bgColor: COLORS.blue, textColor: '#fff', isCorrect: true, size: 'medium' },
-      { label: '파란 버튼', bgColor: COLORS.error, textColor: '#fff', isCorrect: false, size: 'medium' },
-      { label: '파란 버튼', bgColor: COLORS.btnSecondary, textColor: COLORS.textBody, isCorrect: false, size: 'medium' },
-      { label: '파란 버튼', bgColor: COLORS.btnPrimary, textColor: '#fff', isCorrect: false, size: 'medium' },
+      { label: '누르세요', bgColor: COLORS.blue, textColor: '#fff', isCorrect: true, size: 'medium' },
+      { label: '누르세요', bgColor: COLORS.error, textColor: '#fff', isCorrect: false, size: 'medium' },
+      { label: '누르세요', bgColor: COLORS.warning, textColor: '#fff', isCorrect: false, size: 'medium' },
+      { label: '누르세요', bgColor: COLORS.success, textColor: '#fff', isCorrect: false, size: 'medium' },
     ],
   },
   {
-    description: '빨간색 버튼을 누르세요',
+    description: '빨간색 배경 버튼을 누르세요',
     phase: 2,
     buttons: [
       { label: '이거', bgColor: COLORS.error, textColor: '#fff', isCorrect: true, size: 'medium' },
       { label: '이거', bgColor: COLORS.blue, textColor: '#fff', isCorrect: false, size: 'medium' },
       { label: '이거', bgColor: COLORS.btnPrimary, textColor: '#fff', isCorrect: false, size: 'medium' },
-      { label: '이거', bgColor: COLORS.btnSecondary, textColor: COLORS.textBody, isCorrect: false, size: 'medium' },
+      { label: '이거', bgColor: COLORS.warning, textColor: '#fff', isCorrect: false, size: 'medium' },
     ],
   },
   {
-    description: '초록색 버튼을 누르세요',
+    description: '초록색 배경 버튼을 누르세요',
     phase: 2,
     buttons: [
-      { label: '누르세요', bgColor: COLORS.success, textColor: '#fff', isCorrect: true, size: 'medium' },
-      { label: '누르세요', bgColor: COLORS.warning, textColor: '#fff', isCorrect: false, size: 'medium' },
-      { label: '누르세요', bgColor: COLORS.error, textColor: '#fff', isCorrect: false, size: 'medium' },
-      { label: '누르세요', bgColor: COLORS.btnSecondary, textColor: COLORS.textBody, isCorrect: false, size: 'medium' },
+      { label: '눌러봐', bgColor: COLORS.success, textColor: '#fff', isCorrect: true, size: 'medium' },
+      { label: '눌러봐', bgColor: COLORS.warning, textColor: '#fff', isCorrect: false, size: 'medium' },
+      { label: '눌러봐', bgColor: COLORS.error, textColor: '#fff', isCorrect: false, size: 'medium' },
+      { label: '눌러봐', bgColor: COLORS.blue, textColor: '#fff', isCorrect: false, size: 'medium' },
     ],
   },
   {
     description: '가장 큰 버튼을 누르세요',
     phase: 2,
     buttons: [
-      { label: '클릭', bgColor: COLORS.btnPrimary, textColor: '#fff', isCorrect: true, size: 'large' },
+      { label: '클릭', bgColor: COLORS.btnSecondary, textColor: COLORS.textBody, isCorrect: true, size: 'large' },
       { label: '클릭', bgColor: COLORS.btnSecondary, textColor: COLORS.textBody, isCorrect: false, size: 'medium' },
       { label: '클릭', bgColor: COLORS.btnSecondary, textColor: COLORS.textBody, isCorrect: false, size: 'small' },
       { label: '클릭', bgColor: COLORS.btnSecondary, textColor: COLORS.textBody, isCorrect: false, size: 'medium' },
@@ -126,46 +138,96 @@ const MISSION_POOL: MissionDef[] = [
   },
   {
     description: '가장 작은 버튼을 누르세요',
-    phase: 3,
+    phase: 2,
     buttons: [
-      { label: '정답', bgColor: COLORS.btnPrimary, textColor: '#fff', isCorrect: true, size: 'small' },
+      { label: '정답', bgColor: COLORS.btnSecondary, textColor: COLORS.textBody, isCorrect: true, size: 'small' },
       { label: '정답', bgColor: COLORS.btnSecondary, textColor: COLORS.textBody, isCorrect: false, size: 'large' },
       { label: '정답', bgColor: COLORS.btnSecondary, textColor: COLORS.textBody, isCorrect: false, size: 'medium' },
       { label: '정답', bgColor: COLORS.btnSecondary, textColor: COLORS.textBody, isCorrect: false, size: 'medium' },
-      { label: '정답', bgColor: COLORS.btnSecondary, textColor: COLORS.textBody, isCorrect: false, size: 'large' },
     ],
   },
   {
-    description: '검은 배경 버튼을 누르세요',
-    phase: 3,
+    description: '글자 색이 파란 버튼을 누르세요',
+    phase: 2,
     buttons: [
-      { label: '누르세요', bgColor: COLORS.btnPrimary, textColor: '#fff', isCorrect: true, size: 'medium' },
-      { label: '누르세요', bgColor: '#fff', textColor: COLORS.btnPrimary, isCorrect: false, size: 'medium' },
-      { label: '누르세요', bgColor: COLORS.blue, textColor: '#fff', isCorrect: false, size: 'medium' },
-      { label: '누르세요', bgColor: COLORS.error, textColor: '#fff', isCorrect: false, size: 'medium' },
-      { label: '누르세요', bgColor: COLORS.btnSecondary, textColor: COLORS.textBody, isCorrect: false, size: 'small' },
+      { label: '눌러', bgColor: COLORS.btnSecondary, textColor: COLORS.blue, isCorrect: true, size: 'medium' },
+      { label: '눌러', bgColor: COLORS.blue, textColor: '#fff', isCorrect: false, size: 'medium' },
+      { label: '눌러', bgColor: COLORS.btnSecondary, textColor: COLORS.textBody, isCorrect: false, size: 'medium' },
+      { label: '눌러', bgColor: COLORS.btnSecondary, textColor: COLORS.textSub, isCorrect: false, size: 'medium' },
     ],
   },
+  {
+    description: '글자 색이 빨간 버튼을 누르세요',
+    phase: 2,
+    buttons: [
+      { label: '클릭', bgColor: COLORS.btnSecondary, textColor: COLORS.error, isCorrect: true, size: 'medium' },
+      { label: '클릭', bgColor: COLORS.error, textColor: '#fff', isCorrect: false, size: 'medium' },
+      { label: '클릭', bgColor: COLORS.btnSecondary, textColor: COLORS.textBody, isCorrect: false, size: 'medium' },
+      { label: '클릭', bgColor: COLORS.btnSecondary, textColor: COLORS.textSub, isCorrect: false, size: 'medium' },
+    ],
+  },
+  // phase 3: 텍스트+색+크기 복합 함정
   {
     description: '"이거" 버튼을 누르세요',
     phase: 3,
     buttons: [
-      { label: '이거', bgColor: COLORS.btnPrimary, textColor: '#fff', isCorrect: true, size: 'small' },
-      { label: '이거 아님', bgColor: COLORS.btnSecondary, textColor: COLORS.textBody, isCorrect: false, size: 'large' },
-      { label: '여기', bgColor: COLORS.btnSecondary, textColor: COLORS.textBody, isCorrect: false, size: 'medium' },
-      { label: '이거?', bgColor: COLORS.btnSecondary, textColor: COLORS.textBody, isCorrect: false, size: 'medium' },
-      { label: '확실히 이거', bgColor: COLORS.error, textColor: '#fff', isCorrect: false, size: 'medium' },
+      { label: '이거', bgColor: COLORS.btnSecondary, textColor: COLORS.textBody, isCorrect: true, size: 'small' },
+      { label: '이거 아님', bgColor: COLORS.error, textColor: '#fff', isCorrect: false, size: 'large' },
+      { label: '이거?', bgColor: COLORS.warning, textColor: '#fff', isCorrect: false, size: 'medium' },
+      { label: '확실히 이거', bgColor: COLORS.blue, textColor: '#fff', isCorrect: false, size: 'large' },
+      { label: '진짜 이거', bgColor: COLORS.btnPrimary, textColor: '#fff', isCorrect: false, size: 'medium' },
     ],
   },
   {
     description: '광고 아닌 버튼을 누르세요',
     phase: 3,
     buttons: [
-      { label: '정답', bgColor: COLORS.btnPrimary, textColor: '#fff', isCorrect: true, size: 'small' },
-      { label: '광고 아님', bgColor: COLORS.warning, textColor: '#fff', isCorrect: false, size: 'large' },
+      { label: '닫기', bgColor: COLORS.btnSecondary, textColor: COLORS.textBody, isCorrect: true, size: 'small' },
+      { label: '광고 아님 100%', bgColor: COLORS.warning, textColor: '#fff', isCorrect: false, size: 'large' },
       { label: '× 광고 닫기', bgColor: COLORS.btnSecondary, textColor: COLORS.textBody, isCorrect: false, size: 'medium' },
       { label: '무료 혜택 받기', bgColor: COLORS.error, textColor: '#fff', isCorrect: false, size: 'large' },
       { label: '급하면 누름', bgColor: COLORS.blue, textColor: '#fff', isCorrect: false, size: 'medium' },
+    ],
+  },
+  {
+    description: '숫자가 없는 버튼을 누르세요',
+    phase: 3,
+    buttons: [
+      { label: '정답', bgColor: COLORS.btnSecondary, textColor: COLORS.textBody, isCorrect: true, size: 'small' },
+      { label: '정답1', bgColor: COLORS.btnPrimary, textColor: '#fff', isCorrect: false, size: 'large' },
+      { label: '정답2', bgColor: COLORS.error, textColor: '#fff', isCorrect: false, size: 'medium' },
+      { label: '정답3', bgColor: COLORS.blue, textColor: '#fff', isCorrect: false, size: 'medium' },
+    ],
+  },
+  {
+    description: '테두리 없는 버튼을 누르세요',
+    phase: 3,
+    buttons: [
+      { label: '이게 정답', bgColor: COLORS.btnPrimary, textColor: '#fff', isCorrect: true, size: 'small' },
+      { label: '이게 정답', bgColor: '#fff', textColor: COLORS.textBody, isCorrect: false, size: 'large' },
+      { label: '이게 정답', bgColor: '#fff', textColor: COLORS.textBody, isCorrect: false, size: 'medium' },
+      { label: '이게 정답', bgColor: '#fff', textColor: COLORS.textBody, isCorrect: false, size: 'medium' },
+    ],
+  },
+  {
+    description: '글자가 흰색인 버튼을 누르세요',
+    phase: 3,
+    buttons: [
+      { label: '여기', bgColor: COLORS.btnSecondary, textColor: '#fff', isCorrect: true, size: 'small' },
+      { label: '여기', bgColor: COLORS.btnPrimary, textColor: '#fff', isCorrect: false, size: 'large' },
+      { label: '여기', bgColor: COLORS.btnSecondary, textColor: COLORS.textBody, isCorrect: false, size: 'medium' },
+      { label: '여기', bgColor: COLORS.btnSecondary, textColor: COLORS.textSub, isCorrect: false, size: 'medium' },
+    ],
+  },
+  {
+    description: '검은 배경 버튼을 누르세요',
+    phase: 3,
+    buttons: [
+      { label: '클릭', bgColor: COLORS.btnPrimary, textColor: '#fff', isCorrect: true, size: 'small' },
+      { label: '클릭', bgColor: '#fff', textColor: COLORS.textBody, isCorrect: false, size: 'large' },
+      { label: '클릭', bgColor: COLORS.blue, textColor: '#fff', isCorrect: false, size: 'medium' },
+      { label: '클릭', bgColor: COLORS.error, textColor: '#fff', isCorrect: false, size: 'medium' },
+      { label: '클릭', bgColor: COLORS.btnSecondary, textColor: COLORS.textBody, isCorrect: false, size: 'medium' },
     ],
   },
 ];
@@ -216,7 +278,7 @@ function GamePage() {
   const [buttons, setButtons] = useState<ButtonDef[]>([]);
   const [feedback, setFeedback] = useState<{ text: string; color: string } | null>(null);
   const [result, setResult] = useState<GameResult | null>(null);
-  const [detailUnlocked, setDetailUnlocked] = useState(false);
+  const [roundProgress, setRoundProgress] = useState(1);
 
   const gameVars = useRef({
     score: 0,
@@ -231,8 +293,11 @@ function GamePage() {
   const roundStartedAtRef = useRef(Date.now());
   const lastMissionRef = useRef<MissionDef | null>(null);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const roundProgressTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const feedbackTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const gameStateRef = useRef<GameState>('ready');
+  const roundTimeLimitRef = useRef(3000);
+  const onRoundTimeoutRef = useRef<() => void>(() => {});
 
   useEffect(() => {
     gameStateRef.current = gameState;
@@ -240,6 +305,7 @@ function GamePage() {
 
   const clearTimers = useCallback(() => {
     if (timerRef.current) clearInterval(timerRef.current);
+    if (roundProgressTimerRef.current) clearInterval(roundProgressTimerRef.current);
     if (feedbackTimerRef.current) clearTimeout(feedbackTimerRef.current);
   }, []);
 
@@ -275,7 +341,27 @@ function GamePage() {
     setCurrentMission(mission);
     setButtons(createButtons(mission));
     roundStartedAtRef.current = Date.now();
+    roundTimeLimitRef.current = currentTime > 20 ? 3000 : currentTime > 10 ? 2000 : 1500;
+    setRoundProgress(1);
   }, []);
+
+  onRoundTimeoutRef.current = () => {
+    if (gameStateRef.current !== 'playing') return;
+    const vars = gameVars.current;
+    vars.combo = 0;
+    vars.wrongCount += 1;
+    vars.score -= 80;
+    vars.time = Math.max(0, vars.time - 2);
+    setScore(vars.score);
+    setCombo(0);
+    setTimeRemaining(vars.time);
+    showFeedback('시간 초과!', COLORS.error);
+    if (vars.time <= 0) {
+      endGame();
+      return;
+    }
+    startNewRound(vars.time);
+  };
 
   const handleButtonClick = useCallback((button: ButtonDef) => {
     if (gameStateRef.current !== 'playing') return;
@@ -295,12 +381,12 @@ function GamePage() {
     } else {
       vars.combo = 0;
       vars.wrongCount += 1;
-      vars.score -= 50;
-      vars.time = Math.max(0, vars.time - 1);
+      vars.score -= 80;
+      vars.time = Math.max(0, vars.time - 2);
       setScore(vars.score);
       setCombo(0);
       setTimeRemaining(vars.time);
-      showFeedback('-50', COLORS.error);
+      showFeedback('-80', COLORS.error);
 
       if (vars.time <= 0) {
         endGame();
@@ -326,7 +412,6 @@ function GamePage() {
     setCombo(0);
     setTimeRemaining(30);
     setResult(null);
-    setDetailUnlocked(false);
     setFeedback(null);
     setCountdown(3);
     setGameState('countdown');
@@ -364,8 +449,20 @@ function GamePage() {
       }
     }, 1000);
 
+    roundProgressTimerRef.current = setInterval(() => {
+      if (gameStateRef.current !== 'playing') return;
+      const elapsed = Date.now() - roundStartedAtRef.current;
+      const limit = roundTimeLimitRef.current;
+      const progress = Math.max(0, 1 - elapsed / limit);
+      setRoundProgress(progress);
+      if (elapsed >= limit) {
+        onRoundTimeoutRef.current();
+      }
+    }, 50);
+
     return () => {
       if (timerRef.current) clearInterval(timerRef.current);
+      if (roundProgressTimerRef.current) clearInterval(roundProgressTimerRef.current);
     };
   }, [gameState, startNewRound, endGame]);
 
@@ -387,10 +484,6 @@ function GamePage() {
     });
   }, [result]);
 
-  const handleShowDetail = useCallback(() => {
-    setDetailUnlocked(true);
-  }, []);
-
   if (gameState === 'ready') {
     return <ReadyScreen onStart={startGame} />;
   }
@@ -403,10 +496,8 @@ function GamePage() {
     return (
       <ResultScreen
         result={result}
-        detailUnlocked={detailUnlocked}
         onRetry={handleRetry}
         onShare={handleShare}
-        onShowDetail={handleShowDetail}
       />
     );
   }
@@ -421,6 +512,18 @@ function GamePage() {
 
       <View style={styles.missionBox}>
         <Text style={styles.missionText}>{currentMission.description}</Text>
+        <View style={styles.progressBarContainer}>
+          <View
+            style={[
+              styles.progressBar,
+              {
+                width: `${roundProgress * 100}%`,
+                backgroundColor:
+                  roundProgress > 0.5 ? COLORS.success : roundProgress > 0.25 ? COLORS.warning : COLORS.error,
+              },
+            ]}
+          />
+        </View>
       </View>
 
       <View style={styles.gameArea}>
@@ -515,16 +618,12 @@ function CountdownScreen({ count }: { count: number }) {
 
 function ResultScreen({
   result,
-  detailUnlocked,
   onRetry,
   onShare,
-  onShowDetail,
 }: {
   result: GameResult;
-  detailUnlocked: boolean;
   onRetry: () => void;
   onShare: () => void;
-  onShowDetail: () => void;
 }) {
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.resultContent}>
@@ -545,26 +644,6 @@ function ResultScreen({
         </View>
       </View>
 
-      {detailUnlocked && (
-        <View style={styles.detailCard}>
-          <Text style={styles.detailTitle}>상세 분석</Text>
-          <Text style={styles.detailText}>
-            {result.wrongCount === 0
-              ? '실수가 전혀 없었어요. 집중력이 탁월해요!'
-              : result.wrongCount <= 3
-              ? `${result.wrongCount}번 실수했어요. 꽤 신중한 편이에요.`
-              : `${result.wrongCount}번 낚였어요. 다음엔 1초만 더 생각해보세요.`}
-          </Text>
-          <Text style={styles.detailText}>
-            {result.averageReactionMs < 300
-              ? '반응 속도가 매우 빨라요!'
-              : result.averageReactionMs < 500
-              ? '반응 속도가 적절해요.'
-              : '신중하게 판단하는 타입이에요.'}
-          </Text>
-        </View>
-      )}
-
       <View style={styles.actionButtons}>
         <TouchableOpacity style={styles.retryButton} onPress={onRetry} activeOpacity={0.8}>
           <Text style={styles.retryButtonText}>다시하기</Text>
@@ -572,11 +651,6 @@ function ResultScreen({
         <TouchableOpacity style={styles.shareButton} onPress={onShare} activeOpacity={0.8}>
           <Text style={styles.shareButtonText}>결과 공유하기</Text>
         </TouchableOpacity>
-        {!detailUnlocked && (
-          <TouchableOpacity style={styles.adButton} onPress={onShowDetail} activeOpacity={0.8}>
-            <Text style={styles.adButtonText}>상세 분석 보기</Text>
-          </TouchableOpacity>
-        )}
       </View>
     </ScrollView>
   );
@@ -640,6 +714,18 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: COLORS.textPrimary,
     textAlign: 'center',
+    marginBottom: 10,
+  },
+  progressBarContainer: {
+    width: '100%',
+    height: 6,
+    backgroundColor: COLORS.border,
+    borderRadius: 3,
+    overflow: 'hidden',
+  },
+  progressBar: {
+    height: '100%',
+    borderRadius: 3,
   },
   gameArea: {
     flex: 1,
@@ -789,25 +875,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: COLORS.textPrimary,
   },
-  detailCard: {
-    backgroundColor: COLORS.card,
-    borderRadius: 12,
-    borderWidth: 1,
-    borderColor: COLORS.border,
-    padding: 20,
-    gap: 8,
-  },
-  detailTitle: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: COLORS.textSub,
-    marginBottom: 4,
-  },
-  detailText: {
-    fontSize: 14,
-    color: COLORS.textBody,
-    lineHeight: 20,
-  },
   actionButtons: {
     gap: 10,
   },
@@ -832,13 +899,5 @@ const styles = StyleSheet.create({
     color: COLORS.textPrimary,
     fontSize: 16,
     fontWeight: '600',
-  },
-  adButton: {
-    paddingVertical: 12,
-    alignItems: 'center',
-  },
-  adButtonText: {
-    color: COLORS.textSub,
-    fontSize: 14,
   },
 });
