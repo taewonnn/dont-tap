@@ -268,6 +268,78 @@ const BUTTON_SIZE_MAP: Record<ButtonSize, { height: number; paddingH: number; fo
   large: { height: 60, paddingH: 28, fontSize: 17 },
 };
 
+type InlineAdProps = {
+  adGroupId: string;
+  theme?: 'auto' | 'light' | 'dark';
+  tone?: 'blackAndWhite' | 'grey';
+  variant?: 'expanded' | 'card';
+  impressFallbackOnMount?: boolean;
+};
+
+type AdEvent =
+  | { type: 'loaded' }
+  | { type: 'requested' }
+  | { type: 'show' }
+  | { type: 'impression' }
+  | { type: 'clicked' }
+  | { type: 'dismissed' }
+  | { type: 'failedToShow' }
+  | { type: 'userEarnedReward'; data: { unitType: string; unitAmount: number } };
+
+type FullScreenAdFn = ((params: {
+  options: { adGroupId: string };
+  onEvent: (e: AdEvent) => void;
+  onError: (e: unknown) => void;
+}) => void) & { isSupported: () => boolean };
+
+let _InlineAd: React.ComponentType<InlineAdProps> | null = null;
+let _loadFullScreenAd: FullScreenAdFn | null = null;
+let _showFullScreenAd: FullScreenAdFn | null = null;
+
+try {
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  const fw = require('@apps-in-toss/framework');
+  _InlineAd = fw.InlineAd ?? null;
+  _loadFullScreenAd = fw.loadFullScreenAd ?? null;
+  _showFullScreenAd = fw.showFullScreenAd ?? null;
+} catch {
+  // granite dev 환경 — 광고 없이 동작
+}
+
+function SafeInlineAd(props: InlineAdProps) {
+  if (!_InlineAd) {
+    return (
+      <View style={adPlaceholderStyles.container}>
+        <Text style={adPlaceholderStyles.label}>AD</Text>
+      </View>
+    );
+  }
+  const InlineAd = _InlineAd;
+  return <InlineAd {...props} />;
+}
+
+const adPlaceholderStyles = StyleSheet.create({
+  container: {
+    width: '100%',
+    height: 96,
+    backgroundColor: COLORS.btnSecondary,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: COLORS.border,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  label: {
+    fontSize: 11,
+    fontWeight: '600',
+    color: COLORS.textSub,
+    letterSpacing: 1.5,
+  },
+});
+
+const BANNER_AD_GROUP_ID = 'ait-ad-test-banner-id';
+const INTERSTITIAL_AD_GROUP_ID = 'ait-ad-test-interstitial-id';
+
 function GamePage() {
   const [gameState, setGameState] = useState<GameState>('ready');
   const [countdown, setCountdown] = useState(3);
@@ -279,6 +351,7 @@ function GamePage() {
   const [feedback, setFeedback] = useState<{ text: string; color: string } | null>(null);
   const [result, setResult] = useState<GameResult | null>(null);
   const [roundProgress, setRoundProgress] = useState(1);
+  const [isInterstitialLoaded, setIsInterstitialLoaded] = useState(false);
 
   const gameVars = useRef({
     score: 0,
@@ -333,6 +406,16 @@ function GamePage() {
       resultType: getResultType(vars.wrongCount, avgReaction),
     });
     setGameState('finished');
+
+    if (_loadFullScreenAd?.isSupported()) {
+      _loadFullScreenAd({
+        options: { adGroupId: INTERSTITIAL_AD_GROUP_ID },
+        onEvent: event => {
+          if (event.type === 'loaded') setIsInterstitialLoaded(true);
+        },
+        onError: () => setIsInterstitialLoaded(false),
+      });
+    }
   }, [clearTimers]);
 
   const startNewRound = useCallback((currentTime: number) => {
@@ -412,6 +495,7 @@ function GamePage() {
     setCombo(0);
     setTimeRemaining(30);
     setResult(null);
+    setIsInterstitialLoaded(false);
     setFeedback(null);
     setCountdown(3);
     setGameState('countdown');
@@ -467,8 +551,19 @@ function GamePage() {
   }, [gameState, startNewRound, endGame]);
 
   const handleRetry = useCallback(() => {
-    startGame();
-  }, [startGame]);
+    if (_showFullScreenAd?.isSupported() && isInterstitialLoaded) {
+      _showFullScreenAd({
+        options: { adGroupId: INTERSTITIAL_AD_GROUP_ID },
+        onEvent: event => {
+          if (event.type === 'dismissed') startGame();
+          if (event.type === 'failedToShow') startGame();
+        },
+        onError: () => startGame(),
+      });
+    } else {
+      startGame();
+    }
+  }, [isInterstitialLoaded, startGame]);
 
   const handleShare = useCallback(async () => {
     if (!result) return;
@@ -479,9 +574,29 @@ function GamePage() {
       '빠른 급발진러': '하위 40%',
       '광고 배너 헌터': '하위 60%',
     };
-    await Share.share({
-      message: `낚시 버튼 저항력 ${rankMap[result.resultType] ?? ''} | ${result.resultType} | ${result.score}점`,
-    });
+    const rank = rankMap[result.resultType] ?? '';
+    const summary = `낚시 버튼 저항력 ${rank} | ${result.resultType} | ${result.score}점`;
+
+    try {
+      let shareLink = '';
+      try {
+        // eslint-disable-next-line @typescript-eslint/no-require-imports
+        const { getTossShareLink } = require('@apps-in-toss/native-modules') as {
+          getTossShareLink: (scheme: string) => Promise<string>;
+        };
+        shareLink = await getTossShareLink('intoss://dont-tap');
+      } catch {
+        // 링크 생성 실패 시 텍스트만 공유
+      }
+
+      const message = shareLink
+        ? `${summary}\n\n너도 도전해봐!\n${shareLink}`
+        : summary;
+
+      await Share.share({ message });
+    } catch {
+      // 공유 실패 무시
+    }
   }, [result]);
 
   if (gameState === 'ready') {
@@ -560,6 +675,16 @@ function GamePage() {
           </View>
         )}
       </View>
+
+      <View style={styles.bannerArea}>
+        <SafeInlineAd
+          adGroupId={BANNER_AD_GROUP_ID}
+          theme="auto"
+          tone="blackAndWhite"
+          variant="expanded"
+          impressFallbackOnMount={true}
+        />
+      </View>
     </View>
   );
 }
@@ -585,25 +710,37 @@ function StatusItem({
 
 function ReadyScreen({ onStart }: { onStart: () => void }) {
   return (
-    <View style={[styles.container, styles.centerContent]}>
-      <Text style={styles.mainTitle}>가짜 버튼 피하기</Text>
-      <Text style={styles.subtitle}>
-        진짜 버튼만 빠르게 눌러보세요.{'\n'}낚시 버튼을 누르면 점수가 깎입니다.
-      </Text>
+    <View style={styles.container}>
+      <View style={[styles.centerContent, { flex: 1 }]}>
+        <Text style={styles.mainTitle}>가짜 버튼 피하기</Text>
+        <Text style={styles.subtitle}>
+          진짜 버튼만 빠르게 눌러보세요.{'\n'}낚시 버튼을 누르면 점수가 깎입니다.
+        </Text>
 
-      <View style={styles.rulesCard}>
-        <Text style={styles.rulesTitle}>게임 규칙</Text>
-        <Text style={styles.rulesItem}>정답 버튼 +100점</Text>
-        <Text style={styles.rulesItem}>오답 버튼 -50점, -1초</Text>
-        <Text style={styles.rulesItem}>5콤보마다 +50점 보너스</Text>
-        <Text style={styles.rulesItem}>제한 시간 30초</Text>
+        <View style={styles.rulesCard}>
+          <Text style={styles.rulesTitle}>게임 규칙</Text>
+          <Text style={styles.rulesItem}>정답 버튼 +100점</Text>
+          <Text style={styles.rulesItem}>오답 버튼 -80점, -2초</Text>
+          <Text style={styles.rulesItem}>5콤보마다 +50점 보너스</Text>
+          <Text style={styles.rulesItem}>제한 시간 30초</Text>
+        </View>
+
+        <TouchableOpacity style={styles.startButton} onPress={onStart} activeOpacity={0.8}>
+          <Text style={styles.startButtonText}>게임 시작</Text>
+        </TouchableOpacity>
+
+        <Text style={styles.hintText}>30초 안에 당신의 낚시 버튼 저항력을 측정해요.</Text>
       </View>
 
-      <TouchableOpacity style={styles.startButton} onPress={onStart} activeOpacity={0.8}>
-        <Text style={styles.startButtonText}>게임 시작</Text>
-      </TouchableOpacity>
-
-      <Text style={styles.hintText}>30초 안에 당신의 낚시 버튼 저항력을 측정해요.</Text>
+      <View style={styles.bannerArea}>
+        <SafeInlineAd
+          adGroupId={BANNER_AD_GROUP_ID}
+          theme="auto"
+          tone="blackAndWhite"
+          variant="expanded"
+          impressFallbackOnMount={true}
+        />
+      </View>
     </View>
   );
 }
@@ -644,9 +781,19 @@ function ResultScreen({
         </View>
       </View>
 
+      <View style={styles.bannerArea}>
+        <SafeInlineAd
+          adGroupId={BANNER_AD_GROUP_ID}
+          theme="auto"
+          tone="blackAndWhite"
+          variant="expanded"
+          impressFallbackOnMount={true}
+        />
+      </View>
+
       <View style={styles.actionButtons}>
         <TouchableOpacity style={styles.retryButton} onPress={onRetry} activeOpacity={0.8}>
-          <Text style={styles.retryButtonText}>다시하기</Text>
+          <Text style={styles.retryButtonText}>광고 보고 다시하기</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.shareButton} onPress={onShare} activeOpacity={0.8}>
           <Text style={styles.shareButtonText}>결과 공유하기</Text>
@@ -874,6 +1021,9 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     color: COLORS.textPrimary,
+  },
+  bannerArea: {
+    width: '100%',
   },
   actionButtons: {
     gap: 10,
