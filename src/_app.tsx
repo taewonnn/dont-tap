@@ -6,7 +6,4 @@ function AppContainer({ children }: PropsWithChildren<InitialProps>) {
   return <>{children}</>;
 }
 
-export default Granite.registerApp(AppContainer, {
-  appName: 'dont-tap',
-  context,
-});
+export default Granite.registerApp(AppContainer, { appName: 'dont-tap', context });

@@ -4,6 +4,6 @@ import { defineConfig } from '@granite-js/react-native/config';
 
 export default defineConfig({
   appName: 'dont-tap',
-  scheme: 'granite',
+  scheme: 'intoss',
   plugins: [router(), hermes()],
 });
