@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { COLORS, BANNER_AD_GROUP_ID } from '../constants';
 import { SafeInlineAd } from '../ads';
 
@@ -9,7 +10,7 @@ type ReadyScreenProps = {
 
 export function ReadyScreen({ onStart }: ReadyScreenProps) {
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container} edges={['top']}>
       <View style={styles.content}>
         <Text style={styles.mainTitle}>가짜 버튼 피하기</Text>
         <Text style={styles.subtitle}>
@@ -40,7 +41,7 @@ export function ReadyScreen({ onStart }: ReadyScreenProps) {
           impressFallbackOnMount={true}
         />
       </View>
-    </View>
+    </SafeAreaView>
   );
 }
 

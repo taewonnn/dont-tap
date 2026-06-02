@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, ScrollView, StyleSheet } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { COLORS, BANNER_AD_GROUP_ID } from '../constants';
 import { SafeInlineAd } from '../ads';
 import type { GameResult } from '../types';
@@ -12,7 +13,8 @@ type ResultScreenProps = {
 
 export function ResultScreen({ result, onRetry, onShare }: ResultScreenProps) {
   return (
-    <ScrollView style={styles.container} contentContainerStyle={styles.content}>
+    <SafeAreaView style={styles.container} edges={['top']}>
+    <ScrollView contentContainerStyle={styles.content}>
       <View style={styles.resultCard}>
         <Text style={styles.resultSubtitle}>당신의 낚시 버튼 저항력</Text>
         <Text style={styles.resultScore}>{result.score}점</Text>
@@ -49,6 +51,7 @@ export function ResultScreen({ result, onRetry, onShare }: ResultScreenProps) {
         </TouchableOpacity>
       </View>
     </ScrollView>
+    </SafeAreaView>
   );
 }
 

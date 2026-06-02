@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { COLORS } from '../constants';
 
 type CountdownScreenProps = {
@@ -8,9 +9,9 @@ type CountdownScreenProps = {
 
 export function CountdownScreen({ count }: CountdownScreenProps) {
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container} edges={['top']}>
       <Text style={styles.number}>{count > 0 ? count : '시작!'}</Text>
-    </View>
+    </SafeAreaView>
   );
 }
 

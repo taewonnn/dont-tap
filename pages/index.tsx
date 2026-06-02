@@ -1,6 +1,7 @@
 import { createRoute } from '@granite-js/react-native';
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Dimensions, Share } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { COLORS, BUTTON_SIZE_MAP, INTERSTITIAL_AD_GROUP_ID, BANNER_AD_GROUP_ID } from '../src/constants';
 import { _loadFullScreenAd, _showFullScreenAd, SafeInlineAd } from '../src/ads';
 import { pickMission, createButtons, generatePhase1Mission } from '../src/missions';
@@ -286,7 +287,7 @@ function GamePage() {
   }
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <View style={styles.statusBar}>
         <StatusItem label="남은 시간" value={`${timeRemaining}초`} highlight={timeRemaining <= 5} />
         <StatusItem label="점수" value={score.toLocaleString()} />
@@ -353,7 +354,7 @@ function GamePage() {
           impressFallbackOnMount={true}
         />
       </View>
-    </View>
+    </SafeAreaView>
   );
 }
 
